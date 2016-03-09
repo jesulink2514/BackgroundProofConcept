@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <div data-bind="with:Order">
+                    <label>Client:</label>
+                    <input type="text" data-bind="textInput:Client" />
+                    <label>Amount:</label>
+                    <input type="text" data-bind="textInput:Amount" />                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bind="click:$root.save">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-header">
+    <h1>Registro de Ordenes</h1>
+</div>
+<div class="container-fluid">
+    <p>
+        <button class="btn btn-success"
+                data-bind="click:showNewOrderDialog">Agregar Orden</button>    
+    </p>
+    <div>
+        <table class="table table-bordered table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Client</th>
+                    <th>Amount</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach:Orders">
+                <tr>
+                    <td data-bind="text:Id"></td>
+                    <td data-bind="text:Client"></td>
+                    <td data-bind="text:Amount"></td>
+                    <td>
+                        <span class="fa" data-bind="css:{'fa-refresh rotating':!Completado(),'fa-check':Completado()}"></span>
+                        <span data-bind="text:Completado()?'Enviada':'Pendiente'"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+@section scripts{
+<script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+<script src="~/signalr/hubs"></script>
+<script src="~/Scripts/knockout-3.4.0.js"></script>
+<script src="~/Scripts/knockout.mapping.js"></script>
+<script src="~/Scripts/Order.js"></script>
+<script src="~/Scripts/OrdersViewModel.js"></script>
+<script>
+    var vm = new OrdersViewModel();
+    ko.applyBindings(vm);
+</script>
+}
